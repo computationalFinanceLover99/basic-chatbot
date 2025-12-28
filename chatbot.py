@@ -3,6 +3,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from flask import Flask, render_template, request, jsonify
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 
 app = Flask(__name__)
 
@@ -11,7 +16,7 @@ app = Flask(__name__)
 # llm initialization 
 llm = ChatGoogleGenerativeAI(
     model = "gemini-2.5-flash",
-    google_api_key="AIzaSyD5_PsP5cbWOjKDHf0uBrNFn-txyXImlKY"
+    google_api_key=os.getenv("GOOGLE_API_KEY")
 )
 
 # memory 
