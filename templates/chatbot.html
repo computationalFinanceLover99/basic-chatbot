@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini Chatbot</title>
+    <style>
+        body {
+            text-align: center; /* center inline elements */
+            font-family: Arial, sans-serif;
+        }
+
+        #chatbox {
+            border: 1px solid #000;
+            height: 200px;
+            width: 400px;
+            overflow: auto;
+            padding: 5px;
+            margin: 0 auto 10px auto; /* center block element + spacing below */
+            text-align: left; /* messages align left inside the box */
+        }
+
+        #userInput {
+            width: 300px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Gemini Chatbot</h2>
+
+<div id="chatbox"></div>
+
+<input type="text" id="userInput" placeholder="Type your message">
+<br>
+<button onclick="sendMessage()">Send</button>
+
+<script>
+function sendMessage() {
+    let msg = document.getElementById("userInput").value;
+    if(msg === "") return;
+
+    let chatbox = document.getElementById("chatbox");
+    chatbox.innerHTML += "You: " + msg + "<br><br>";
+
+    fetch("/get_response", {
+        method: "POST",
+        body: new URLSearchParams({message: msg})
+    })
+    .then(response => response.json())
+    .then(data => {
+        chatbox.innerHTML += "Bot: " + data.reply + "<br><br>";
+        chatbox.scrollTop = chatbox.scrollHeight;
+    });
+
+    document.getElementById("userInput").value = "";
+}
+</script>
+
+</body>
+</html>
+
